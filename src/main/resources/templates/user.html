@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#search-input").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#userTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1 style="text-align: center">User List</h1>
+    <br>
+    <a th:href="@{/addUser}" class="btn btn-primary" style="margin-bottom: 15px">New user</a>
+    <input type="text" id="search-input" placeholder="Search..." class="col-xs-4" style="float: right">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Birthday</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody id="userTable">
+        <tr th:each="user: ${infoUser}">
+            <td th:text="${user.getId()}"/>
+            <td th:text="${user.getUserName()}"/>
+            <td th:text="${user.getEmail()}"/>
+            <td th:text="${user.getBirthday()}"/>
+            <td>
+                <a th:href="@{/updateUser(id=${user.getId()})}" class="btn btn-primary">Edit</a>
+                <a onclick="return confirm('Delete ?')" th:href="@{/deleteUser(id=${user.getId()})}"
+                       class="btn btn-danger" id="btn_delete">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
